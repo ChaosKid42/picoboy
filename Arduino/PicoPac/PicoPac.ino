@@ -25,10 +25,11 @@ U8G2_SH1106_128X64_NONAME_F_4W_HW_SPI u8g2(U8G2_R3, /* cs=*/10, /* dc=*/8, /* re
 #include "TABman/tabman.h"
 #include "SCLange/sclange.h"
 #include "PICtris/pictris.h"
-#include "Misc/StarIntro.h"
+#include "Misc/starintro.h"
 #include "Demo/demo.h"
 #include "Conway/conway.h"
 #include "HWTest/hwtest.h"
+#include "OledPong/oledpong.h"
 
 void setup(void)
 {
@@ -49,7 +50,11 @@ void setup(void)
   {
     eepromWriteInt(4, 0);
   }
-  
+  if (eepromReadInt(6) >= 65500)
+  {
+    eepromWriteInt(6, 0);
+  }
+
   u8g2.begin();
 
   u8g2.setContrast(31);
@@ -102,6 +107,11 @@ void setup(void)
   {
     HWTest hwt(u8g2);
     hwt.run();
+  }
+  else if (gameID == 7)
+  {
+    OledPong oledpong(u8g2);
+    oledpong.run();
   }
 }
 
